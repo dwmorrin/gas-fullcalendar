@@ -2,15 +2,33 @@
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
 
-Using [webpack](https://webpack.js.org/) and clasp to get FullCalendar into an Apps Script web app.
+Based off of the [FullCalendar Rollup Example](https://github.com/fullcalendar/fullcalendar-example-projects/tree/master/rollup),
+this embeds FullCalendar into a Google Apps Script web app.
 
-## Current workflow
-* edit `js/main.js`
-* `npm run build`
-* manually add `<script>` tags around the output file, `dist/js/bundle.js` (TODO: automate this)
-* run `clasp push` from `dist`
+## Dependencies
+- [rollup](https://rollupjs.org/) (local)
+- tool for inlining (see [inline](https://github.com/dwmorrin/py-inline) for my python based tool) (global)
+- make (global)
+- clasp (global)
 
-## Project structure
-js source files are in the project root `js` dir.
-`dist` is the root directory for what is uploaded to Apps Script, so run `clasp` from there.
-`dist` contains `js` for client javascript (must be inline scripts with `.html` extensions), `gs` for server javascript, `html` for html.
+## Starting
+The build directory needs an appsscript.json from your Apps Script project.
+New projects: `clasp create --rootDir build`.
+Existing projects can use `clasp clone --rootDir build`.
+Once you have a `.clasp.json` file, you can open the project in a browser with
+`clasp open`.
+
+Copy the `serverJs/env_sample.js` file to `serverJs/env.js` and update the
+private info in there as needed.
+
+## Build & Push
+`make` will update the build directory, which is sync'd with Apps Script.
+```shell
+make
+```
+
+The `push` target just runs `clasp push` with the power of `make`.  It creates
+an empty file `./push` to keep track of the last time you pushed.
+```shell
+make push
+```

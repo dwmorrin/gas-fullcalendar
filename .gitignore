@@ -1,2 +1,6 @@
 node_modules
 .clasp.json
+push
+build
+clientBundles
+env.js
