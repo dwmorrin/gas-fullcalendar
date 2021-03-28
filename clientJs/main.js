@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import "./main.css";
-import { createElement } from "./html";
+import modal from "./modal";
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
@@ -19,11 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     dayMaxEvents: true, // allow "more" link when too many events
+    eventClick: function (info) {
+      modal({
+        heading: info.event.title,
+        paragraph: `${info.event.startStr} to ${info.event.endStr}`,
+      });
+    },
     eventSources: [
       {
         events: function (info, successCallback, failureCallback) {
           const { startStr, endStr } = info;
-          const cleanup = modal({ heading: "Loading..." });
+          const cleanup = modal({ heading: "Loading...", noButtons: true });
           google.script.run
             .withFailureHandler((error) => {
               failureCallback(error);
@@ -42,18 +48,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
   calendar.render();
 });
-
-function modal({ heading = "", paragraph = "" }) {
-  const block = createElement("div", { class: "overlay" });
-  const m = createElement("div", { class: "modal" });
-  const h1 = createElement("h1", { textContent: heading });
-  const p = createElement("p", { textContent: paragraph });
-  m.appendChild(h1);
-  m.appendChild(p);
-  document.body.appendChild(block);
-  document.body.appendChild(m);
-  return () => {
-    m.remove();
-    block.remove();
-  };
-}
