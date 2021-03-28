@@ -3,7 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <script>
-      const defaultCalendarId = "<?!= defaultCalendarId ?>";
+      const calendarInfo = [
+        <? calendars.forEach(cal => { ?>
+           {
+             name: "<?= cal.getName() ?>",
+             id: "<?= cal.getId() ?>",
+             checked: <?!= cal.getId() === defaultCalendarId ?>,
+             color: "<?= cal.getColor() ?>",
+           },
+        <? }); ?>
+      ];
     </script>
     <script inline src="clientBundles/main.min.js"></script>
   </head>

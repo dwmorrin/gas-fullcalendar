@@ -1,18 +1,9 @@
 import { createElement } from "./html";
+import "./modal.css";
 
-export default function modal({
-  heading = "",
-  paragraph = "",
-  noButtons = false,
-}) {
+export default function modal({ children, noButtons = false }) {
   const block = createElement("div", { class: "overlay" });
-  const m = createElement("div", {
-    class: "modal",
-    children: [
-      createElement("h1", { textContent: heading }),
-      createElement("p", { textContent: paragraph }),
-    ],
-  });
+  const m = createElement("div", { class: "modal", children });
   document.body.appendChild(block);
   document.body.appendChild(m);
   const cleanUp = () => {
