@@ -1,0 +1,10 @@
+.spinner {
+  position: absolute;
+  background-color: coral;
+  top: 0;
+  margin-left: 50%;
+}
+
+.loading::after {
+  content: "loading...";
+}

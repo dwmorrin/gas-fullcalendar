@@ -5,12 +5,15 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import "./main.css";
 import modal from "./modal";
-import EventSource from "./EventSource";
+import EventSourceFactory from "./EventSourceFactory";
 import checkboxList from "./checkboxList";
 import { heading, paragraph } from "./html";
+import makeSpinner from "./spinner";
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
+  const spinner = makeSpinner();
+  const EventSource = EventSourceFactory(spinner);
 
   const calendar = new Calendar(calendarEl, {
     customButtons: {
@@ -58,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     eventSources: [
       EventSource({
         ...calendarInfo.find(({ checked }) => checked), // first one checked is default
-        withModal: true,
       }),
     ],
   });
