@@ -4,6 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import "./main.css";
+import { createElement } from "./html";
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
@@ -18,31 +19,38 @@ document.addEventListener("DOMContentLoaded", function () {
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     dayMaxEvents: true, // allow "more" link when too many events
-    events: function(info, successCalback, failureCallback) {
-      const {startStr, endStr} = info;
-      const cleanup = modal();
-      google.script.run
-        .withFailureHandler(failureCallback)
-        .withSuccessHandler(events => {
-          successCalback(JSON.parse(events))
-          cleanup();
-        })
-        .getEvents({startStr, endStr});
+    eventSources: [
+      {
+        events: function (info, successCallback, failureCallback) {
+          const { startStr, endStr } = info;
+          const cleanup = modal({ heading: "Loading..." });
+          google.script.run
+            .withFailureHandler((error) => {
+              failureCallback(error);
+              cleanup();
+              modal({ heading: "Server error", paragraph: error.message });
+            })
+            .withSuccessHandler((events) => {
+              successCallback(JSON.parse(events));
+              cleanup();
+            })
+            .getEvents({ startStr, endStr });
         },
+      },
+    ],
   });
 
   calendar.render();
 });
 
-function modal() {
-  const block = document.createElement("div");
-  block.classList.add("overlay");
-  document.body.appendChild(block);
-  const m = document.createElement("div");
-  m.classList.add("modal");
-  const h1 = document.createElement("h1");
-  h1.textContent = "Loading...";
+function modal({ heading = "", paragraph = "" }) {
+  const block = createElement("div", { class: "overlay" });
+  const m = createElement("div", { class: "modal" });
+  const h1 = createElement("h1", { textContent: heading });
+  const p = createElement("p", { textContent: paragraph });
   m.appendChild(h1);
+  m.appendChild(p);
+  document.body.appendChild(block);
   document.body.appendChild(m);
   return () => {
     m.remove();
