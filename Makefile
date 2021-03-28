@@ -14,7 +14,7 @@ $(buildDir)/index.html: index.html $(clientBundles)/main.min.js | $(buildDir)
 $(clientBundles)/main.min.js: $(clientBundles)/main.js
 	uglifyjs $< -o $@ -c -m
 
-$(clientBundles)/main.js: $(wildcard src/*) | $(clientBundles)
+$(clientBundles)/main.js: $(wildcard $(clientSrc)/*) | $(clientBundles)
 	rollup -c
 
 $(clientBundles):
