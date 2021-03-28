@@ -1,12 +1,23 @@
-import env from "./env";
-
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile("index");
+  const html = HtmlService.createTemplateFromFile("index");
+  html.defaultCalendarId = CalendarApp.getDefaultCalendar().getId();
+  return html.evaluate().setTitle("Calendar");
 }
 
-function getEvents({startStr, endStr}) {
+function getCalendars() {
+  return JSON.stringify(CalendarApp.getAllCalendars().map(CalToCalInfo));
+}
+
+function CalToCalInfo(cal) {
+  return {
+    name: cal.getName(),
+    id: cal.getId(),
+  };
+}
+
+function getEvents({ id, startStr, endStr }) {
   return JSON.stringify(
-    CalendarApp.getCalendarById(env.defaultCalendarId)
+    CalendarApp.getCalendarById(id)
       .getEvents(new Date(startStr), new Date(endStr))
       .map(CalEventToFCEvent)
   );
@@ -22,4 +33,5 @@ function CalEventToFCEvent(calEvent) {
 
 // assign to globalThis as a way of declaring exports for rollup
 globalThis.doGet = doGet;
+globalThis.getCalendars = getCalendars;
 globalThis.getEvents = getEvents;

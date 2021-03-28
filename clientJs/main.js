@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
               successCallback(JSON.parse(events));
               cleanup();
             })
-            .getEvents({ startStr, endStr });
+            .getEvents({ id: defaultCalendarId, startStr, endStr });
         },
       },
     ],

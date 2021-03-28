@@ -27,9 +27,6 @@ Existing projects can use `clasp clone --rootDir build [projectID]`.
 Once you have a `.clasp.json` file, you can open the project in a browser with
 `clasp open`.
 
-Copy the `serverJs/env_sample.js` file to `serverJs/env.js` and update the
-private info in there as needed.
-
 ## Build & Push
 
 `make` will update the build directory, which is sync'd with Apps Script.
