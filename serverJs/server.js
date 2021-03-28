@@ -28,6 +28,7 @@ function CalEventToFCEvent(calEvent) {
     title: calEvent.getTitle(),
     start: calEvent.getStartTime().toJSON(),
     end: calEvent.getEndTime().toJSON(),
+    allDay: calEvent.isAllDayEvent(),
   };
 }
 
