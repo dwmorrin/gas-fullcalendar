@@ -5,6 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import "./main.css";
 import modal from "./modal";
+import EventSource from "./EventSource";
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
@@ -28,23 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     },
     eventSources: [
-      {
-        events: function (info, successCallback, failureCallback) {
-          const { startStr, endStr } = info;
-          const cleanup = modal({ heading: "Loading...", noButtons: true });
-          google.script.run
-            .withFailureHandler((error) => {
-              failureCallback(error);
-              cleanup();
-              modal({ heading: "Server error", paragraph: error.message });
-            })
-            .withSuccessHandler((events) => {
-              successCallback(JSON.parse(events));
-              cleanup();
-            })
-            .getEvents({ id: defaultCalendarId, startStr, endStr });
-        },
-      },
+      EventSource({ color: "green", id: defaultCalendarId, withModal: true }),
     ],
   });
 
