@@ -14,6 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const spinner = makeSpinner();
   const EventSource = EventSourceFactory(spinner);
 
+  const eventSources = calendarInfo.reduce(
+    (sources, cal) => (cal.checked ? [...sources, EventSource(cal)] : sources),
+    []
+  );
+
   const calendar = new Calendar(calendarEl, {
     customButtons: {
       calendarPicker: {
@@ -40,11 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     eventClick: function (info) {
       eventModal(info.event);
     },
-    eventSources: [
-      EventSource({
-        ...calendarInfo.find(({ checked }) => checked), // first one checked is default
-      }),
-    ],
+    eventSources,
   });
 
   calendar.render();

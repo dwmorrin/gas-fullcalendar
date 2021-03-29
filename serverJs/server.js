@@ -1,9 +1,12 @@
 import Calendar from "./Calendar";
+import SelectedCalendars from "./SelectedCalendars";
 
 function doGet() {
   const html = HtmlService.createTemplateFromFile("index");
-  html.defaultCalendarId = CalendarApp.getDefaultCalendar().getId();
-  html.calendars = CalendarApp.getAllCalendars();
+  const selected = SelectedCalendars();
+  html.calendars = CalendarApp.getAllCalendars().map((cal) =>
+    selected.getSelected(Calendar.getInfo(cal))
+  );
   return html
     .evaluate()
     .setTitle("Calendar")
@@ -14,6 +17,11 @@ function getEvents({ id, startStr, endStr }) {
   return JSON.stringify(new Calendar(id, startStr, endStr).events);
 }
 
+function setSelected(calendar) {
+  SelectedCalendars().setSelected(calendar);
+}
+
 // assign to globalThis as a way of declaring exports for rollup
 globalThis.doGet = doGet;
 globalThis.getEvents = getEvents;
+globalThis.setSelected = setSelected;

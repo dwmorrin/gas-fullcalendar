@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <script>
       const calendarInfo = [
-        <? calendars.forEach(cal => { ?>
+        <? calendars.forEach(({name, id, checked, color}) => { ?>
            {
-             name: "<?= cal.getName() ?>",
-             id: "<?= cal.getId() ?>",
-             checked: <?!= cal.getId() === defaultCalendarId ?>,
-             color: "<?= cal.getColor() ?>",
+             name: "<?= name ?>",
+             id: "<?= id ?>",
+             checked: <?!= checked ? "true" : "false" ?>,
+             color: "<?= color ?>",
            },
         <? }); ?>
       ];

@@ -21,6 +21,7 @@ export default function selectCalendars({
           cal.checked = false;
           removeCalendarSource(cal);
         }
+        google.script.run.setSelected(cal);
       }),
     ],
   });

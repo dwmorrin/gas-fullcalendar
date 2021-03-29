@@ -15,4 +15,16 @@ export default class Calendar {
       .getEvents(this.start, this.end)
       .map((gCalEvent) => new FCEvent(gCalEvent));
   }
+
+  /**
+   * unpack a Google Calendar object
+   * @param {Object} calendar
+   */
+  static getInfo(calendar) {
+    return {
+      name: calendar.getName(),
+      id: calendar.getId(),
+      color: calendar.getColor(),
+    };
+  }
 }
