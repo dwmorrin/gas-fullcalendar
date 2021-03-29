@@ -4,7 +4,10 @@ function doGet() {
   const html = HtmlService.createTemplateFromFile("index");
   html.defaultCalendarId = CalendarApp.getDefaultCalendar().getId();
   html.calendars = CalendarApp.getAllCalendars();
-  return html.evaluate().setTitle("Calendar");
+  return html
+    .evaluate()
+    .setTitle("Calendar")
+    .addMetaTag("viewport", "width=device-width");
 }
 
 function getEvents({ id, startStr, endStr }) {
