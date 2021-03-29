@@ -7,8 +7,9 @@ import "./main.css";
 import modal from "./modal";
 import EventSourceFactory from "./EventSourceFactory";
 import checkboxList from "./checkboxList";
-import { heading, paragraph } from "./html";
+import { heading } from "./html";
 import makeSpinner from "./spinner";
+import eventModal from "./eventModal";
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
@@ -51,12 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     editable: true,
     dayMaxEvents: true, // allow "more" link when too many events
     eventClick: function (info) {
-      modal({
-        children: [
-          heading(info.event.title),
-          paragraph(`${info.event.startStr} to ${info.event.endStr}`),
-        ],
-      });
+      eventModal(info.event);
     },
     eventSources: [
       EventSource({
