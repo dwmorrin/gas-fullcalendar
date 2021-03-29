@@ -4,12 +4,13 @@
     <meta charset="utf-8" />
     <script>
       const calendarInfo = [
-        <? calendars.forEach(({name, id, checked, color}) => { ?>
+        <? calendars.forEach(({name, id, checked, color, order}) => { ?>
            {
              name: "<?= name ?>",
              id: "<?= id ?>",
              checked: <?!= checked ? "true" : "false" ?>,
              color: "<?= color ?>",
+             order: <?= order ?>,
            },
         <? }); ?>
       ];

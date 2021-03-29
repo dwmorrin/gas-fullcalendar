@@ -5,7 +5,7 @@ function doGet() {
   const html = HtmlService.createTemplateFromFile("index");
   const selected = SelectedCalendars();
   html.calendars = CalendarApp.getAllCalendars().map((cal) =>
-    selected.getSelected(Calendar.getInfo(cal))
+    selected.getStoredProperties(Calendar.getInfo(cal))
   );
   return html
     .evaluate()
@@ -21,7 +21,12 @@ function setSelected(calendar) {
   SelectedCalendars().setSelected(calendar);
 }
 
+function setOrder(calendar) {
+  SelectedCalendars().setOrder(calendar);
+}
+
 // assign to globalThis as a way of declaring exports for rollup
 globalThis.doGet = doGet;
 globalThis.getEvents = getEvents;
 globalThis.setSelected = setSelected;
+globalThis.setOrder = setOrder;

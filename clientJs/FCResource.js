@@ -7,8 +7,10 @@ export default class FCResource {
    * Translates Google's data structure to FullCalendar
    * @param {Object} calInfo data passed from Google Calendar APIs
    */
-  constructor({ id, name }) {
+  constructor({ id, name, order = 0 }) {
     this.id = id;
     this.title = name;
+    // extendedProps; get with resourceObjectInstance.extendedProps.order
+    this.order = order;
   }
 }
