@@ -4,12 +4,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import "./main.css";
-import modal from "./modal";
 import EventSourceFactory from "./EventSourceFactory";
-import checkboxList from "./checkboxList";
-import { heading } from "./html";
 import makeSpinner from "./spinner";
 import eventModal from "./eventModal";
+import selectCalendars from "./selectCalendars";
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
@@ -21,22 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
       calendarPicker: {
         text: "Calendars",
         click: () =>
-          modal({
-            children: [
-              heading("Select calendars"),
-              checkboxList(calendarInfo, ({ checked, id }) => {
-                const cal = calendarInfo.find((c) => c.id === id);
-                if (!cal.checked && checked) {
-                  // checking calendar
-                  cal.checked = true;
-                  addCalendarSource(cal);
-                } else {
-                  // removing calendar
-                  cal.checked = false;
-                  removeCalendarSource(cal);
-                }
-              }),
-            ],
+          selectCalendars({
+            calendarInfo,
+            addCalendarSource,
+            removeCalendarSource,
           }),
       },
     },
