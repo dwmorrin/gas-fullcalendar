@@ -11,6 +11,8 @@ export default function modal({ children, noButtons = false }) {
     block.remove();
   };
   if (!noButtons) {
+    // allow clicking away from modal to dismiss
+    block.addEventListener("click", cleanUp);
     m.appendChild(
       createElement("button", {
         textContent: "Close",
