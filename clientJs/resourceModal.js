@@ -6,7 +6,7 @@ import "./resourceModal.css";
 /**
  * @param {FCResource} resource
  */
-export default function resourceModal(resource) {
+export default function resourceModal({ resource, calendarInfo }) {
   let inputTouched = false;
 
   const updateButton = createElement("button", {
@@ -43,6 +43,8 @@ export default function resourceModal(resource) {
         children: [paragraph("Invalid order.  Must be whole number.")],
       });
     google.script.run.setOrder({ id: resource.id, order });
+    const cal = calendarInfo.find((c) => c.id === resource.id);
+    cal.order = order;
     resource.setExtendedProp("order", order);
     cleanUp();
   });

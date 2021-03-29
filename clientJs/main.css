@@ -13,3 +13,8 @@ body {
 #calendar {
   height: 100%;
 }
+
+.clickable:hover {
+  cursor: pointer;
+  color: blue;
+}

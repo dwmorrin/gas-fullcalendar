@@ -54,7 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
     eventSources,
     resources,
     resourceLabelDidMount: function ({ resource, el }) {
-      el.addEventListener("click", () => resourceModal(resource));
+      el.classList.add("clickable");
+      el.addEventListener("click", () =>
+        resourceModal({ resource, calendarInfo })
+      );
     },
     resourceOrder: "order",
     schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",

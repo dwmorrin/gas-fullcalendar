@@ -11,6 +11,7 @@ export default class FCResource {
     this.id = id;
     this.title = name;
     // extendedProps; get with resourceObjectInstance.extendedProps.order
-    this.order = order;
+    order = Number(order);
+    this.order = isNaN(order) ? 0 : order;
   }
 }

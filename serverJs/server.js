@@ -4,9 +4,11 @@ import SelectedCalendars from "./SelectedCalendars";
 function doGet() {
   const html = HtmlService.createTemplateFromFile("index");
   const selected = SelectedCalendars();
-  html.calendars = CalendarApp.getAllCalendars().map((cal) =>
+  const calendars = CalendarApp.getAllCalendars().map((cal) =>
     selected.getStoredProperties(Calendar.getInfo(cal))
   );
+  calendars.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  html.calendars = calendars;
   return html
     .evaluate()
     .setTitle("Calendar")
