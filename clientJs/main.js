@@ -1,13 +1,13 @@
 import { Calendar } from "@fullcalendar/core";
 import interactionPlugin from "@fullcalendar/interaction";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
+import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import "./main.css";
 import EventSourceFactory from "./EventSourceFactory";
 import makeSpinner from "./spinner";
 import eventModal from "./eventModal";
+import resourceModal from "./resourceModal";
 import selectCalendars from "./selectCalendars";
+import FCResource from "./FCResource";
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const eventSources = calendarInfo.reduce(
     (sources, cal) => (cal.checked ? [...sources, EventSource(cal)] : sources),
+    []
+  );
+
+  const resources = calendarInfo.reduce(
+    (sources, cal) =>
+      cal.checked ? [...sources, new FCResource(cal)] : sources,
     []
   );
 
@@ -31,13 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
           }),
       },
     },
-    plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
+    plugins: [interactionPlugin, resourceTimelinePlugin],
     headerToolbar: {
       left: "prev,next today calendarPicker",
       center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+      right: "resourceTimelineMonth,resourceTimelineWeek,resourceTimelineDay",
     },
-    initialView: "timeGridWeek",
+    initialView: "resourceTimelineDay",
     nowIndicator: true,
     navLinks: true, // can click day/week names to navigate views
     editable: true,
@@ -46,15 +52,22 @@ document.addEventListener("DOMContentLoaded", function () {
       eventModal(info.event);
     },
     eventSources,
+    resources,
+    resourceLabelDidMount: function ({ resource, el }) {
+      el.addEventListener("click", () => resourceModal(resource));
+    },
+    schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
   });
 
   calendar.render();
 
   function addCalendarSource(cal) {
     calendar.addEventSource(EventSource(cal));
+    calendar.addResource(new FCResource(cal));
   }
 
   function removeCalendarSource({ id }) {
     calendar.getEventSourceById(id).remove();
+    calendar.getResourceById(id).remove();
   }
 });

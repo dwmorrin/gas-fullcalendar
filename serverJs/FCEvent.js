@@ -7,5 +7,7 @@ export default class FCEvent {
     this.start = gCalEvent.getStartTime().toJSON();
     this.end = gCalEvent.getEndTime().toJSON();
     this.allDay = gCalEvent.isAllDayEvent();
+    // temporarily tying together Calendar ID and FC resource ID
+    this.resourceId = gCalEvent.getOriginalCalendarId();
   }
 }
