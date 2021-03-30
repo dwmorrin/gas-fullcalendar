@@ -1,8 +1,10 @@
-import modal from "./modal";
-import { heading, paragraph } from "./html";
+import withFailureHandlerHelper from "./withFailureHandlerHelper";
 
 /**
  * https://fullcalendar.io/docs/event-source-object
+ *
+ * Returns a function for creating event sources.
+ *
  * @param {Object} spinner see "spinner.js", passed in so it can be shared
  */
 export default function EventSourceFactory(spinner) {
@@ -17,9 +19,7 @@ export default function EventSourceFactory(spinner) {
           .withFailureHandler((error) => {
             spinner.release(id);
             failureCallback(error);
-            modal({
-              children: [heading("Server error"), paragraph(error.message)],
-            });
+            withFailureHandlerHelper(error);
           })
           .withSuccessHandler((events) => {
             spinner.release(id);
