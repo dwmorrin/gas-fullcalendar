@@ -65,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   calendar.render();
 
+  window.setInterval(() => calendar.refetchEvents(), 3 * 60 * 1000);
+
   function addCalendarSource(cal) {
     calendar.addEventSource(EventSource(cal));
     calendar.addResource(new FCResource(cal));
