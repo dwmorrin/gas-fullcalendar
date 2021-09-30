@@ -25,6 +25,7 @@ export default function modal({
   children,
   noButtons = false,
   timeoutSeconds = 0,
+  escapeCanDismiss = true,
 }) {
   const block = createElement("div", { class: "overlay" });
   const m = createElement("div", { class: "modal", children });
@@ -54,6 +55,11 @@ export default function modal({
 
   if (timeoutSeconds && !isNaN(timeoutSeconds) && timeoutSeconds > 0)
     window.setTimeout(() => cleanUp(), timeoutSeconds * 1000);
+
+  if (escapeCanDismiss)
+    window.addEventListener("keyup", ({ key }) => {
+      if (key === "Escape") cleanUp();
+    });
 
   return cleanUp;
 }
